@@ -11,7 +11,7 @@ import {
 	Person as PersonIcon,
 } from '@mui/icons-material'
 
-export const Login = () => {
+export const Login = (): JSX.Element => {
 	const { mutate } = useLogin()
 	const [showPassword, setShowPassword] = useState(false)
 	const [errorMessage, setErrorMessage] = useState<string | null>(
@@ -21,7 +21,7 @@ export const Login = () => {
 	const Navigate = useNavigate()
 
 	if (auth.isAuthenticated) {
-		return Navigate('/')
+		Navigate('/')
 	}
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -74,6 +74,7 @@ export const Login = () => {
 						id="email"
 						label="Email"
 						placeholder="example@gmail.com"
+						autoComplete="email"
 						required
 						InputProps={{
 							endAdornment: (
@@ -94,6 +95,7 @@ export const Login = () => {
 						placeholder="Escribe tu contraseña"
 						type={showPassword ? 'text' : 'password'}
 						required
+						autoComplete="current-password"
 						InputProps={{
 							endAdornment: (
 								<IconButton
