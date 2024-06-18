@@ -1,29 +1,42 @@
-import { createBrowserRouter } from 'react-router-dom'
 import { Home } from '@/modules/core'
-import { AuthLayout } from '@/modules/auth'
-import { ProtectedRoute } from '@/modules/auth'
-const routes = [
-	{ 
-		path: '/', 
-		element: <ProtectedRoute />, 
-		children: [
-			{
-				path: '/',
-				element: <Home />,
-			},
-		],
-	},
-	{
-		element: <AuthLayout />,
-		children: [
-			{
-				path: '/login',
-				element: <div>login</div>,
-			},
-			{
-				path: '/register',
-			},
-		],
-	},
-]
-export const router = createBrowserRouter(routes)
+import { Login, Register, ProtectedRoute } from '@/modules/auth'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+export const AppRoutes = () => {
+	return (
+		<BrowserRouter>
+			<Routes>
+				{/* RUTAS PUBLICAS */}
+				<Route path="/" element={<Login />} />
+				<Route
+					path="*"
+					element={
+						<div>
+							<h1>404</h1>
+							<p>Página no encontrada</p>
+						</div>
+					}
+				/>
+				<Route path="/register" element={<Register />} />
+				{/* RUTAS DEL ADMINISTRADOR */}
+				<Route
+					path="/admin"
+					element={
+						<ProtectedRoute role="admin" redirectTo="/admin">
+							<div>ROL DE ADMINISTRADOR</div>
+						</ProtectedRoute>
+					}
+				/>
+				{/* RUTAS DEL USUARIO */}
+				<Route
+					path="/user"
+					element={
+						<ProtectedRoute role="user" redirectTo="/">
+							<Home />
+						</ProtectedRoute>
+					}
+				/>
+			</Routes>
+		</BrowserRouter>
+	)
+}

@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './config/routes'
+import {
+	QueryClientProvider,
+	QueryClient,
+} from '@tanstack/react-query'
+import { AppRoutes } from './config/routes'
 import './index.css'
 
 import '@fontsource/roboto/300.css'
@@ -16,7 +18,7 @@ root.render(
 	<React.StrictMode>
 		<AuthProvider>
 			<QueryClientProvider client={new QueryClient()}>
-				<RouterProvider router={router} />
+				<AppRoutes />
 			</QueryClientProvider>
 		</AuthProvider>
 	</React.StrictMode>
