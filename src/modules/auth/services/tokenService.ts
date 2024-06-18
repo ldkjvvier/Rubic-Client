@@ -1,4 +1,4 @@
-import { AccessTokenResponse } from "../types/user"
+import { AccessTokenResponse } from '../types/user'
 
 export const tokenService = async () => {
 	try {
@@ -8,22 +8,23 @@ export const tokenService = async () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					credentials: 'include',
 				},
-				credentials: 'include',
 			}
 		)
 
 		if (!response.ok) {
-			const errorData = await response.json() as AccessTokenResponse
+			const errorData = (await response.json()) as AccessTokenResponse
 			throw new Error(
 				errorData.error || 'Error al refrescar el token'
 			)
 		}
 
-		const data = await response.json() as AccessTokenResponse
+		const data = (await response.json()) as AccessTokenResponse
+		console.log(data)
 		return data
 	} catch (error) {
 		console.error('Error al refrescar el token', error)
-    return null
+		return null
 	}
 }

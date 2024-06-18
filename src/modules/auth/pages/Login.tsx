@@ -1,8 +1,7 @@
 import { useLogin } from '../hooks/useLogin'
 import { useState } from 'react'
 import { useAuth } from '../provider/AuthProvider'
-import { useNavigate } from 'react-router'
-import { IconButton, Container, TextField } from '@mui/material'
+import { IconButton, TextField } from '@mui/material'
 
 import {
 	Login as LoginIcon,
@@ -10,19 +9,18 @@ import {
 	Visibility,
 	Person as PersonIcon,
 } from '@mui/icons-material'
-
+import { LoginData } from '../types/user'
+import { AuthLayout } from '../components/AuthLayout'
+import { Navigate } from 'react-router-dom' // Importa Navigate desde react-router-dom
 export const Login = (): JSX.Element => {
 	const { mutate } = useLogin()
 	const [showPassword, setShowPassword] = useState(false)
 	const [errorMessage, setErrorMessage] = useState<string | null>(
 		null
 	)
+	const [redirectUser, setRedirectUser] = useState(false) // Estado para controlar la redirección
 	const auth = useAuth()
-	const Navigate = useNavigate()
 
-	if (auth.isAuthenticated) {
-		Navigate('/')
-	}
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setErrorMessage(null)
@@ -30,13 +28,14 @@ export const Login = (): JSX.Element => {
 		const email = form.email.value
 		const password = form.password.value
 
-		const credentials = { email, password }
+		const credentials: LoginData = { email, password }
 		mutate(credentials, {
 			onSuccess: (data) => {
 				if (data) {
 					console.log('Login correcto', data)
 					setErrorMessage(null)
 					auth.saveUser(data)
+					setRedirectUser(true)
 				}
 			},
 			onError: (error) => {
@@ -51,8 +50,14 @@ export const Login = (): JSX.Element => {
 		setShowPassword(!showPassword)
 	}
 
+	if (redirectUser && auth.isAuthenticated) {
+		// Redirigir al usuario según su rol
+		return (
+			<Navigate to={auth.user.role === 'admin' ? '/admin' : '/'} />
+		)
+	}
 	return (
-		<Container className="bg-white rounded-lg text-black p-12 	">
+		<AuthLayout>
 			<div>
 				<LoginIcon
 					className="text-indigo-600"
@@ -132,7 +137,7 @@ export const Login = (): JSX.Element => {
 					{errorMessage && errorMessage}
 				</p>
 			</form>
-		</Container>
+		</AuthLayout>
 	)
 }
 

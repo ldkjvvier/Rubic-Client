@@ -8,6 +8,7 @@ export const loginService = async (credentials: AuthResponse) => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				credentials: 'include',
 				body: JSON.stringify(credentials),
 			}
 		)

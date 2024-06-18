@@ -1,94 +1,88 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { AuthResponse, User } from '../types/user'
-import { tokenService } from '../services/tokenService'
-import { userService } from '../services/userService'
+import { verifyTokenService } from '../services/verifyTokenService'
 interface AuthProviderProps {
 	children: React.ReactNode
 }
 
 const AuthContext = createContext({
 	isAuthenticated: false,
-	getAccessToken: () => {},
 	saveUser: (userData: AuthResponse) => {},
-	getRefreshToken: () => {},
+	user: {} as User,
+	isLoading: false,
+	logout: () => {},
 })
 
+const defaultUser = {
+	id: '',
+	name: '',
+	lastname: '',
+	email: '',
+	role: '',
+} as User
 export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
-	const [accessToken, setAccessToken] = useState<string>('')
-	const [refreshToken, setRefreshToken] = useState<string>('')
-	const [user, setUser] = useState<User>()
+	const [user, setUser] = useState<User>(defaultUser)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-    checkAuth()
-	}, [])
-
-	const getUserInfo = async () => {
-    const response = await userService(refreshToken)
-    if (response) {
-      return response
-    }
-    return null
-  }
-	const requestNewAccessToken = async (refreshToken: string) => {
-		const response = await tokenService()
-		if (response) {
-			return response.body.accessToken
-		}
-		return null
-	}
-	const checkAuth = async () => {
-		if (accessToken) {
-      return 
-		} else {
-			const token = getRefreshToken()
-			if (token) {
-				const newAccessToken = await requestNewAccessToken(token)
-				if (newAccessToken) {
-					const userInfo = await getUserInfo()
-					if (userInfo) {
-						saveSessionInfo(userInfo, newAccessToken, token)
-					}
+		const checkAuth = async () => {
+			setIsLoading(true)
+			try {
+				const data = await verifyTokenService()
+				if (data.statusCode !== 200) {
+					setIsAuthenticated(false)
+					setIsLoading(false)
+					return
 				}
+				console.log(user)
+				saveSessionInfo(data.body.user)
+				setIsAuthenticated(true)
+				setIsLoading(false)
+			} catch (error) {
+				setIsAuthenticated(false)
+				setIsLoading(false)
 			}
 		}
-	}
+		checkAuth()
+	}, [])
 
-	const saveSessionInfo = (
-		user: User,
-		accessToken: string,
-		refreshToken: string
-	) => {
-		setAccessToken(accessToken)
-		localStorage.setItem('token', JSON.stringify(refreshToken))
+	const saveSessionInfo = (user: User) => {
+		console.log({ user })
 		setIsAuthenticated(true)
 		setUser(user)
 	}
-	const getAccessToken = () => {
-		return accessToken
-	}
-	const getRefreshToken = (): string | null => {
-		const token = localStorage.getItem('token')
-		if (token) {
-			const { refreshToken } = JSON.parse(token)
-			return refreshToken
-		}
-		return null
-	}
+
 	const saveUser = (userData: AuthResponse) => {
-		saveSessionInfo(
-			userData.body.user,
-			userData.body.accessToken,
-			userData.body.refreshToken
-		)
+		saveSessionInfo(userData.body.user)
+	}
+
+	const logout = async () => {
+		try {
+			const res = await fetch(
+				'http://localhost:5000/v1/api/auth/logout',
+				{
+					method: 'POST',
+					credentials: 'include',
+				}
+			)
+			const data = await res.json()
+			if (data.statusCode === 200) {
+				setIsAuthenticated(false)
+				setUser(defaultUser)
+			}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 	return (
 		<AuthContext.Provider
 			value={{
 				isAuthenticated,
-				getAccessToken,
+				user,
 				saveUser,
-				getRefreshToken,
+				isLoading,
+				logout,
 			}}
 		>
 			{children}

@@ -1,8 +1,26 @@
 import { Outlet, Navigate } from 'react-router'
 import { useAuth } from '../provider/AuthProvider'
+import { Loading } from '@/components/loader/Loading'
 
-export const ProtectedRoute = () => {
-  const auth = useAuth()
+interface ProtectedRouteProps {
+	role?: string
+	children?: React.ReactNode
+	redirectTo: string
+}
 
-	return auth.isAuthenticated ? <Outlet /> : <Navigate to="/login" />
+export const ProtectedRoute = ({
+	role,
+	children,
+	redirectTo,
+}: ProtectedRouteProps) => {
+	const auth = useAuth()
+	if (auth.isLoading) return <Loading />
+	if (!auth.isLoading && !auth.isAuthenticated) {
+		return <Navigate to={redirectTo} />
+	}
+
+	if (role && auth.user.role !== role) {
+		return <Navigate to="/notfound" />
+	}
+	return children ? children : <Outlet />
 }
