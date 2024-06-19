@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router'
-import { useAuth } from '../provider/AuthProvider'
+import { useAuth } from '../hooks/useAuth'
 import { Loading } from '@/components/loader/Loading'
 
 interface ProtectedRouteProps {
