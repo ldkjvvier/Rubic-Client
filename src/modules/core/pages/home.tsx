@@ -1,6 +1,6 @@
 import { PdfUrl } from '../components/PdfUrl'
 import { PdfFile } from '../components/PdfFile'
-import { useAuth } from '@/modules/auth/provider/AuthProvider'
+import { useAuth } from '@/modules/auth/hooks/useAuth'
 export const Home = (): JSX.Element => {
 	const { user, logout } = useAuth()
 
