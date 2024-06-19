@@ -1,26 +1,15 @@
-import { PdfUrl } from '../components/PdfUrl'
-import { PdfFile } from '../components/PdfFile'
-import { useAuth } from '@/modules/auth/hooks/useAuth'
+import { PdfUrl } from '../components/PdfUrl';
+import { PdfFile } from '../components/PdfFile';
+import { Header } from '@/modules/shared';
 export const Home = (): JSX.Element => {
-	const { user, logout } = useAuth()
+  return (
+    <div className="w-full">
+      <Header />
 
-	return (
-		<>
-			<div>
-				<h3>
-					Welcome {user?.name} {user?.lastname}
-				</h3>
-				<h3>{user?.email}</h3>
-				<br />
-				<br />
-			</div>
-			<PdfUrl />
-			<br />
-			<PdfFile />
-			<br />
-			<button className="p-3 bg-cyan-900 rounded" onClick={logout}>
-				Logout
-			</button>
-		</>
-	)
-}
+      <PdfUrl />
+      <br />
+      <PdfFile />
+      <br />
+    </div>
+  );
+};
