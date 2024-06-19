@@ -1,157 +1,104 @@
-import { useLogin } from '../hooks/useLogin'
-import { useState } from 'react'
-import { useAuth } from '../provider/AuthProvider'
-import { IconButton, TextField } from '@mui/material'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { IconButton, TextField } from '@mui/material';
+import { Login as LoginIcon, VisibilityOff, Visibility, Person as PersonIcon } from '@mui/icons-material';
+import { AuthLayout } from '../components/AuthLayout';
+import { useAuth } from '../hooks/useAuth';
 
-import {
-	Login as LoginIcon,
-	VisibilityOff,
-	Visibility,
-	Person as PersonIcon,
-} from '@mui/icons-material'
-import { LoginData } from '../types/user'
-import { AuthLayout } from '../components/AuthLayout'
-import { Navigate } from 'react-router-dom' // Importa Navigate desde react-router-dom
 export const Login = (): JSX.Element => {
-	const { mutate } = useLogin()
-	const [showPassword, setShowPassword] = useState(false)
-	const [errorMessage, setErrorMessage] = useState<string | null>(
-		null
-	)
-	const [redirectUser, setRedirectUser] = useState(false) // Estado para controlar la redirección
-	const auth = useAuth()
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+  const { signin, error } = useAuth();
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		setErrorMessage(null)
-		const form = e.currentTarget as HTMLFormElement
-		const email = form.email.value
-		const password = form.password.value
+  const onSubmit = handleSubmit((data) => {
+    const credentials = {
+      email: data.email,
+      password: data.password
+    };
+    signin(credentials);
+  });
 
-		const credentials: LoginData = { email, password }
-		mutate(credentials, {
-			onSuccess: (data) => {
-				if (data) {
-					console.log('Login correcto', data)
-					setErrorMessage(null)
-					auth.saveUser(data)
-					setRedirectUser(true)
-				}
-			},
-			onError: (error) => {
-				console.log('Error en el login', error)
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-				setErrorMessage(error.message)
-			},
-		})
-	}
+  return (
+    <AuthLayout>
+      <div>
+        <LoginIcon className="text-indigo-600" sx={{ fontSize: 40 }} />
+        <h1 className="text-3xl font-semibold mt-4">Welcome</h1>
+        <p className="text-gray-500 mt-2">Ingresa tus credenciales para iniciar sesión</p>
+      </div>
+      <form action="submit" onSubmit={onSubmit} className="flex flex-col w-full text-left mt-8  min-w-96">
+        <div className="flex flex-col gap-8">
+          <TextField
+            type="email"
+            id="email"
+            label="Email"
+            {...register('email', {
+              required: 'Correo electrónico es requerido'
+            })}
+            placeholder="example@gmail.com"
+            autoComplete="email"
+            InputProps={{
+              endAdornment: (
+                <IconButton aria-label="toggle password visibility" edge="end" disabled>
+                  <PersonIcon className="text-[24px] text-gray-400" />
+                </IconButton>
+              )
+            }}
+          />
 
-	const handleClickShowPassword = () => {
-		setShowPassword(!showPassword)
-	}
+          <TextField
+            id="password"
+            label="Password"
+            {...register('password', {
+              required: 'Contraseña es requerida'
+            })}
+            placeholder="Escribe tu contraseña"
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="current-password"
+            InputProps={{
+              endAdornment: (
+                <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} edge="end">
+                  {showPassword ? (
+                    <Visibility className="text-[24px] text-gray-400" />
+                  ) : (
+                    <VisibilityOff className="text-[24px] text-gray-400" />
+                  )}
+                </IconButton>
+              )
+            }}
+          />
+        </div>
+        <div className="text-sm text-right mt-2">
+          <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            Olvidaste tu contraseña?
+          </a>
+        </div>
+        {errors.email && <p className="text-red-500 text-sm mt-2">Correo electrónico es requerido</p>}
+        <button
+          type="submit"
+          className="mt-24 rounded-lg p-3 bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 ease-in-out"
+        >
+          Iniciar Sesión
+        </button>
 
-	if (redirectUser && auth.isAuthenticated) {
-		// Redirigir al usuario según su rol
-		return (
-			<Navigate to={auth.user.role === 'admin' ? '/admin' : '/'} />
-		)
-	}
-	return (
-		<AuthLayout>
-			<div>
-				<LoginIcon
-					className="text-indigo-600"
-					sx={{ fontSize: 40 }}
-				/>
-				<h1 className="text-3xl font-semibold mt-4">Welcome</h1>
-				<p className="text-gray-500 mt-2">
-					Ingresa tus credenciales para iniciar sesión
-				</p>
-			</div>
-			<form
-				action="submit"
-				onSubmit={handleSubmit}
-				className="flex flex-col w-full text-left mt-8  min-w-96"
-			>
-				<div className="flex flex-col gap-8">
-					<TextField
-						type="email"
-						id="email"
-						label="Email"
-						placeholder="example@gmail.com"
-						autoComplete="email"
-						required
-						InputProps={{
-							endAdornment: (
-								<IconButton
-									aria-label="toggle password visibility"
-									edge="end"
-									disabled
-								>
-									<PersonIcon className="text-[24px] text-gray-400" />
-								</IconButton>
-							),
-						}}
-					/>
+        <p className="text-red-500 mt-4 text-center">{error || ''}</p>
+      </form>
+    </AuthLayout>
+  );
+};
 
-					<TextField
-						id="password"
-						label="Password"
-						placeholder="Escribe tu contraseña"
-						type={showPassword ? 'text' : 'password'}
-						required
-						autoComplete="current-password"
-						InputProps={{
-							endAdornment: (
-								<IconButton
-									aria-label="toggle password visibility"
-									onClick={handleClickShowPassword}
-									edge="end"
-								>
-									{showPassword ? (
-										<Visibility className="text-[24px] text-gray-400" />
-									) : (
-										<VisibilityOff className="text-[24px] text-gray-400" />
-									)}
-								</IconButton>
-							),
-						}}
-					/>
-				</div>
-				<div className="text-sm text-right mt-2">
-					<a
-						href="#"
-						className="font-semibold text-indigo-600 hover:text-indigo-500"
-					>
-						Olvidaste tu contraseña?
-					</a>
-				</div>
-				<button
-					type="submit"
-					className="mt-24 rounded-lg p-3 bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 ease-in-out"
-				>
-					Iniciar Sesión
-				</button>
-
-				<p className="text-red-500 mt-4 text-center">
-					{errorMessage && errorMessage}
-				</p>
-			</form>
-		</AuthLayout>
-	)
-}
-
-export const LabelLayout = ({
-	text,
-	children,
-}: {
-	text: string
-	children: React.ReactNode
-}) => {
-	return (
-		<label htmlFor={text} className="flex flex-col">
-			<span>{text}</span>
-			{children}
-		</label>
-	)
-}
+export const LabelLayout = ({ text, children }: { text: string; children: React.ReactNode }) => {
+  return (
+    <label htmlFor={text} className="flex flex-col">
+      <span>{text}</span>
+      {children}
+    </label>
+  );
+};
