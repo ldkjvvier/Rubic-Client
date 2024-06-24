@@ -1,0 +1,70 @@
+.ant-empty-img-1 {
+  fill: #262626;
+}
+
+.ant-empty-img-2 {
+  fill: #595959;
+}
+
+.ant-empty-img-3 {
+  fill: #434343;
+}
+
+.ant-empty-img-4 {
+  fill: #1c1c1c;
+}
+
+.UploadIcon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  fill: #262626;
+}
+
+
+.css-yrdy0g-MuiDataGrid-columnHeaderRow{
+  background-color: var(--color-secondary) !important;
+}
+.MuiMenuItem-root {
+  padding: 100px 8px;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+  padding: 0;
+  background-color: var(--color-secondary);
+}
+
+.custom-textfield .MuiInputBase-root {
+  background-color: #1e1f23; /* Fondo deseado */
+  color: white; /* Color del texto */
+}
+
+.custom-textfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #c4c4c4; /* Color del borde */
+}
+
+.custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2; /* Color del borde al pasar el cursor */
+}
+
+.custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2; /* Color del borde al estar enfocado */
+}
+
+.custom-textfield .MuiInputLabel-root {
+  color: white; /* Color de la etiqueta */
+}
+
+.custom-textfield .MuiInput-underline:before {
+  border-bottom-color: #c4c4c4; /* Color del borde inferior */
+}
+
+.custom-textfield .MuiInput-underline:hover:before {
+  border-bottom-color: #1976d2; /* Color del borde inferior al pasar el cursor */
+}
+
+.custom-textfield .MuiInput-underline:after {
+  border-bottom-color: #1976d2; /* Color del borde inferior al estar enfocado */
+}
