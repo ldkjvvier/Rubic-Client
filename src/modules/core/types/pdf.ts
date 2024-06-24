@@ -1,8 +1,12 @@
-export interface PdfData {
-	apellido: string
-	nombre: string
-	direccion_juzgado: string
-	fecha_cita: string
-	hora_cita: string
-	comuna: string
+export interface PdfListData {
+  createdAt: string;
+  fileId: string;
+  filename: string;
+  owner: string;
+  uploader: string;
+  _id: string;
+}
+
+export interface PdfListProps {
+  data: PdfListData[];
 }
