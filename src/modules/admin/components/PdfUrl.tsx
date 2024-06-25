@@ -34,6 +34,9 @@ export const PdfUrl = (): JSX.Element => {
     const url = formData.get('pdf-url') as string;
     const comuna = formData.get('Comuna') as string;
     const encodedPdfUrl = encodeURIComponent(url);
+    if (!comuna) {
+      return;
+    }
     fetchPdf(encodedPdfUrl, comuna, user);
   };
 
@@ -64,7 +67,7 @@ export const PdfUrl = (): JSX.Element => {
             label="Comuna"
             fullWidth
             name="Comuna"
-            defaultValue={'maipu'}
+            defaultValue={''}
             select
             className="border-red-300"
             sx={{
@@ -88,6 +91,9 @@ export const PdfUrl = (): JSX.Element => {
             }}
             required
           >
+            <MenuItem value="" disabled>
+              Selecciona una comuna
+            </MenuItem>
             {COMUNAS.map((option) => (
               <MenuItem
                 key={option.value}
