@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container, Typography } from '@mui/material';
-import './Uploaded.css';
-
+import './TableGrid.css';
 const CustomNoRowsOverlay = () => {
   return (
     <Container>
@@ -35,12 +34,12 @@ const CustomNoRowsOverlay = () => {
           </g>
         </svg>
       </div>
-      <Box sx={{ mt: 1, color: 'white', fontWeight: 'medium' }}>No hay datos</Box>
+      <Box sx={{ mt: 1, color: 'gray', fontWeight: 'medium', textAlign: 'center' }}>No hay archivos para mostrar</Box>
     </Container>
   );
 };
 
-export const AutoHeightOverlayNoSnap = () => {
+export const TableGrid = ({ rows, columns }: { rows: []; columns: [] }) => {
   return (
     <Box sx={{ width: '100%', textAlign: 'left' }}>
       <Typography
@@ -56,17 +55,33 @@ export const AutoHeightOverlayNoSnap = () => {
       </Typography>
       <DataGrid
         autoHeight
-        columns={[{ field: 'id' }, { field: 'Nombre' }, { field: 'Apellido' }]}
-        rows={[
-          { id: 1, Nombre: 'John', Apellido: 'Doe' },
-          { id: 2, Nombre: 'Jane', Apellido: 'Doe' },
-          { id: 3, Nombre: 'John', Apellido: 'Smith' }
-        ]}
+        columns={columns}
+        rows={rows}
         slots={{ noRowsOverlay: CustomNoRowsOverlay }}
         sx={{
           '--DataGrid-overlayHeight': '300px',
           color: 'white',
-          borderColor: 'var(--color-secondary)'
+          borderColor: 'var(--color-secondary)',
+          '& .MuiDataGrid-row': {
+            '&:hover': {
+              backgroundColor: 'var(--color-secondary)'
+            }
+          },
+          '& .MuiToolbar-root': {
+            color: 'darkgray'
+          },
+          '& .MuiDataGrid-footerContainer': {
+            color: 'darkgray'
+          },
+          '& .MuiTablePagination-actions': {
+            color: 'darkgray'
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'darkgray'
+          },
+          '& .MuiList-root': {
+            color: 'darkgray'
+          }
         }}
       />
     </Box>
