@@ -1,7 +1,7 @@
 import { Header } from '@/modules/shared';
 import { PdfUrl } from '../components/PdfUrl';
 import { PdfFile } from '../components/PdfFile';
-import { AutoHeightOverlayNoSnap } from '../components/Uploaded';
+import { TableGrid } from '@/modules/shared/components/TableGrid';
 export const Home = () => {
   return (
     <>
@@ -13,7 +13,14 @@ export const Home = () => {
           <PdfUrl />
           <PdfFile />
         </div>
-        <AutoHeightOverlayNoSnap />
+        <TableGrid
+          rows={[
+            { id: 1, Nombre: 'John', Apellido: 'Doe' },
+            { id: 2, Nombre: 'Jane', Apellido: 'Doe' },
+            { id: 3, Nombre: 'John', Apellido: 'Smith' }
+          ]}
+          columns={[{ field: 'id' }, { field: 'Nombre' }, { field: 'Apellido' }]}
+        />
       </div>
     </>
   );
