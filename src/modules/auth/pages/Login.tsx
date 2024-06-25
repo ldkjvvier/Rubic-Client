@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IconButton, TextField } from '@mui/material';
+import { IconButton, Link, TextField, Typography } from '@mui/material';
 import { Login as LoginIcon, VisibilityOff, Visibility, Person as PersonIcon } from '@mui/icons-material';
 import { AuthLayout } from '../components/AuthLayout';
 import { useAuth } from '../hooks/useAuth';
@@ -29,9 +29,10 @@ export const Login = (): JSX.Element => {
   return (
     <AuthLayout>
       <div>
-        <LoginIcon className="text-indigo-600" sx={{ fontSize: 40 }} />
-        <h1 className="text-3xl font-semibold mt-4">Welcome</h1>
-        <p className="text-gray-500 mt-2">Ingresa tus credenciales para iniciar sesión</p>
+        <LoginIcon className="text-gray-600" sx={{ fontSize: 40 }} />
+        <Typography component="h1" variant="h5" className="text-gray-800">
+          Inicia Sesión
+        </Typography>
       </div>
       <form action="submit" onSubmit={onSubmit} className="flex flex-col w-full text-left mt-8  min-w-96">
         <div className="flex flex-col gap-8">
@@ -62,6 +63,7 @@ export const Login = (): JSX.Element => {
             placeholder="Escribe tu contraseña"
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
+            className="text-white"
             InputProps={{
               endAdornment: (
                 <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} edge="end">
@@ -90,6 +92,7 @@ export const Login = (): JSX.Element => {
 
         <p className="text-red-500 mt-4 text-center">{error || ''}</p>
       </form>
+      <Copyright />
     </AuthLayout>
   );
 };
@@ -100,5 +103,18 @@ export const LabelLayout = ({ text, children }: { text: string; children: React.
       <span>{text}</span>
       {children}
     </label>
+  );
+};
+
+const Copyright = () => {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://rubic.cl">
+        Rubic
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
 };
