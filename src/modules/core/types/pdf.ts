@@ -5,6 +5,7 @@ export interface PdfListData {
   owner: string;
   uploader: string;
   _id: string;
+  patent: string;
 }
 
 export interface PdfListProps {
