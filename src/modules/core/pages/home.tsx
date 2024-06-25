@@ -47,11 +47,12 @@ export const Home = (): JSX.Element => {
                 patent: pdf.patent,
                 owner: pdf.owner,
                 filename: pdf.filename,
-                createdAt: pdf.createdAt,
-                view: pdf.fileId
+                createdAt: pdf.createdAt.split('T')[0],
+                view: pdf._id
               })) as []
             }
             columns={DataColumns as []}
+            textPlaceholder=""
           />
         )}
         {error && <div>Error: {error}</div>}
