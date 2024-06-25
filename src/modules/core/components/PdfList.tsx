@@ -1,8 +1,6 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { PdfListData, PdfListProps } from '../types/Pdf';
 const CustomNoRowsOverlay = () => {
   return (
     <Container>
@@ -40,15 +38,7 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-export const PdfList = ({ data }: PdfListProps) => {
-  const rows = data.map((item: PdfListData) => ({
-    id: item._id,
-    owner: item.owner,
-    filename: item.filename,
-    createdAt: new Date(item.createdAt).toLocaleString(),
-    view: item.fileId
-  }));
-
+export const PdfList = ({ rows, columns }: { rows: []; columns: [] }) => {
   return (
     <Box sx={{ width: '100%', textAlign: 'left' }}>
       <Typography
@@ -64,28 +54,33 @@ export const PdfList = ({ data }: PdfListProps) => {
       </Typography>
       <DataGrid
         autoHeight
-        columns={[
-          {
-            field: 'view',
-            headerName: 'Ver',
-            width: 100,
-            renderCell: (params) => (
-              <Link to={`http://localhost:5000/v1/api/pdf/view/${params.value}`} target="_blank" rel="noreferrer">
-                Ver
-              </Link>
-            )
-          },
-          { field: 'id', headerName: 'ID', width: 90 },
-          { field: 'owner', headerName: 'Propietario', width: 150 },
-          { field: 'filename', headerName: 'Nombre de archivo', width: 200 },
-          { field: 'createdAt', headerName: 'Fecha de creación', width: 200 }
-        ]}
+        columns={columns}
         rows={rows}
         slots={{ noRowsOverlay: CustomNoRowsOverlay }}
         sx={{
           '--DataGrid-overlayHeight': '300px',
           color: 'white',
-          borderColor: 'var(--color-secondary)'
+          borderColor: 'var(--color-secondary)',
+          '& .MuiDataGrid-row': {
+            '&:hover': {
+              backgroundColor: 'var(--color-secondary)'
+            }
+          },
+          '& .MuiToolbar-root': {
+            color: 'darkgray'
+          },
+          '& .MuiDataGrid-footerContainer': {
+            color: 'darkgray'
+          },
+          '& .MuiTablePagination-actions': {
+            color: 'darkgray'
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'darkgray'
+          },
+          '& .MuiList-root': {
+            color: 'darkgray'
+          }
         }}
       />
     </Box>
