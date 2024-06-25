@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
 import { usePdfByFile } from '../hooks/usePdfByFile';
 import { Loading } from '@/components/loader/Loading';
+import { FormLayout } from './FormLayout';
 import DropzoneInput from './Dropzone';
 
 export const PdfFile = () => {
@@ -19,13 +19,10 @@ export const PdfFile = () => {
   };
 
   return (
-    <Box
-      className="border border-tertiary rounded-sm px-4 py-4 
-      bg-tertiary bg-opacity-10 text-white text-center"
-    >
+    <FormLayout>
       <form action="submit" onSubmit={handleSubmitFile} className="text-white h-full">
         <DropzoneInput />
       </form>
-    </Box>
+    </FormLayout>
   );
 };
