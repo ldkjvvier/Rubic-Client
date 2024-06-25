@@ -11,25 +11,29 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
-import { Navigate } from 'react-router';
-
+import { useNavigate } from 'react-router';
 export const Header = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
   const settings = [
     {
       name: 'Perfil',
-      action: () => <Navigate to="/profile" />
+      action: () => handleRedirect('/profile')
     },
     {
-      name: 'Configuración'
+      name: 'Configuración',
+      action: () => handleRedirect('/settings')
     },
     {
       name: 'Cerrar sesión',
       action: logout
     }
   ];
+  const handleRedirect = (path: string) => {
+    navigate(path);
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElUser(event.currentTarget);
