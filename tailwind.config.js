@@ -18,7 +18,8 @@ export default {
       textColor: {
         primary: '#ffffff',
         secondary: '#d1d5db',
-        tertiary: '#9ca3af'
+        tertiary: '#9ca3af',
+        quaternary: '#6b7280'
       }
     }
   },
