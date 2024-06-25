@@ -4,7 +4,7 @@ import { Loading } from '@/components/loader/Loading';
 import DropzoneInput from './Dropzone';
 
 export const PdfFile = () => {
-  const { data, error, isLoading, fetchPdf } = usePdfByFile();
+  const { error, isLoading, fetchPdf } = usePdfByFile();
   if (isLoading) return <Loading />;
   if (error) return <div>{error}</div>;
 
