@@ -1,8 +1,8 @@
 import { usePdfByUrl } from '../hooks/usePdfByUrl';
-import { Loading } from '@/components/loader/Loading';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, MenuItem } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { MenuItem } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { FormLayout } from './FormLayout';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
@@ -36,12 +36,6 @@ export const PdfUrl = (): JSX.Element => {
     const encodedPdfUrl = encodeURIComponent(url);
     fetchPdf(encodedPdfUrl, comuna, user);
   };
-  if (isLoading)
-    return (
-      <FormLayout>
-        <Loading />
-      </FormLayout>
-    );
 
   return (
     <FormLayout>
@@ -124,17 +118,31 @@ export const PdfUrl = (): JSX.Element => {
             ))}
           </TextField>
 
-          <Button
+          <LoadingButton
             variant="contained"
             endIcon={<SendIcon />}
             sx={{
               color: 'white',
-              backgroundColor: 'var(--color-secondary)'
+              backgroundColor: 'var(--color-secondary)',
+              '&:hover': {
+                backgroundColor: 'var(--color-secondary)',
+                color: 'white'
+              },
+              '&:active': {
+                backgroundColor: 'var(--color-secondary)',
+                color: 'white'
+              },
+              '&.Mui-disabled': {
+                backgroundColor: 'var(--color-secondary)',
+                color: 'white'
+              }
             }}
             type="submit"
+            loading={isLoading}
+            loadingPosition="end"
           >
-            Enviar
-          </Button>
+            <span>Enviar</span>
+          </LoadingButton>
         </Box>
       </form>
     </FormLayout>
