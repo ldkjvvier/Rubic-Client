@@ -1,6 +1,5 @@
 import { usePdfByUrl } from '../hooks/usePdfByUrl';
 import { Loading } from '@/components/loader/Loading';
-import { PdfCard } from '../components/PdfCard';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, MenuItem } from '@mui/material';
@@ -27,7 +26,7 @@ const COMUNAS = [
 ];
 
 export const PdfUrl = (): JSX.Element => {
-  const { data, error, isLoading, fetchPdf } = usePdfByUrl();
+  const { error, isLoading, fetchPdf } = usePdfByUrl();
   const { user } = useAuth();
   const handleSubmitUrl = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +45,6 @@ export const PdfUrl = (): JSX.Element => {
 
   return (
     <FormLayout>
-      {data?.comuna && <PdfCard data={data} />}
       {error && <p>{error}</p>}
       <form action="submit" onSubmit={handleSubmitUrl} className="text-white">
         <TextField
