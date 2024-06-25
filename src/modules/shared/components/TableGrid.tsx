@@ -39,7 +39,7 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-export const TableGrid = ({ rows, columns }: { rows: []; columns: [] }) => {
+export const TableGrid = ({ rows, columns, textPlaceholder }: { rows: []; columns: []; textPlaceholder: string }) => {
   return (
     <Box sx={{ width: '100%', textAlign: 'left' }}>
       <Typography
@@ -51,7 +51,7 @@ export const TableGrid = ({ rows, columns }: { rows: []; columns: [] }) => {
           marginBottom: '10px'
         }}
       >
-        Archivos subidos
+        {textPlaceholder}
       </Typography>
       <DataGrid
         autoHeight
@@ -77,9 +77,6 @@ export const TableGrid = ({ rows, columns }: { rows: []; columns: [] }) => {
             color: 'darkgray'
           },
           '& .MuiSvgIcon-root': {
-            color: 'darkgray'
-          },
-          '& .MuiList-root': {
             color: 'darkgray'
           }
         }}
