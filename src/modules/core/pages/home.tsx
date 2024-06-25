@@ -20,11 +20,11 @@ export const Home = (): JSX.Element => {
         </Link>
       )
     },
-    { field: 'patent', headerName: 'Patente', width: 150 },
-    { field: 'owner', headerName: 'Propietario', width: 150 },
-    { field: 'filename', headerName: 'Nombre de archivo', width: 200 },
-    { field: 'createdAt', headerName: 'Fecha de creación', width: 200 },
-    { field: 'id', headerName: 'ID', width: 90 }
+    { field: 'patent', headerName: 'Patente', width: 90 },
+    { field: 'owner', headerName: 'Propietario', width: 120 },
+    { field: 'filename', headerName: 'Nombre de archivo', width: 160 },
+    { field: 'createdAt', headerName: 'Fecha de creación', width: 150 },
+    { field: 'id', headerName: 'ID', width: 130 }
   ];
 
   useEffect(() => {
@@ -47,8 +47,8 @@ export const Home = (): JSX.Element => {
                 patent: pdf.patent,
                 owner: pdf.owner,
                 filename: pdf.filename,
-                createdAt: pdf.createdAt.split('T')[0],
-                view: pdf._id
+                createdAt: new Date(pdf.createdAt).toLocaleString(),
+                view: pdf.fileId
               })) as []
             }
             columns={DataColumns as []}
